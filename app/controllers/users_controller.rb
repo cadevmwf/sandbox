@@ -18,6 +18,11 @@ class UsersController < ApplicationController
       render 'index'
     end
   end
+  
+  def authorize
+    @code = params[:code]
+    
+  end
 
   def index
     @users = User.all

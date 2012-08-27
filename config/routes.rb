@@ -1,4 +1,6 @@
 Sandbox::Application.routes.draw do
+  get '/auth', :controller => 'Users', :action => 'authorize'
+  
   root :to => 'Users#root'
   
   resources :users
