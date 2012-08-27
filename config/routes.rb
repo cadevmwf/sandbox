@@ -1,5 +1,5 @@
 Sandbox::Application.routes.draw do
-  root :to => 'Users#index'
+  root :to => 'Users#root'
   
   resources :users
   

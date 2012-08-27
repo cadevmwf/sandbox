@@ -20,28 +20,12 @@
     <link href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica:400,400italic' rel='stylesheet' type='text/css'>
   </head>
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <%= link_to "Sandbox", root_url, :class => "brand" %>
-          <div class="container-fluid nav-collapse">
-            <ul class="nav">
-              <li><%= link_to "Users", users_url  %></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
-
     <div class="container-fluid">
       <div class="row-fluid">
-        <% if session[:user_id].present? %>
+        <h1><%= link_to "Sandbox", root_url %></h1>
+      </div><!--/row-->
+      <div class="row-fluid">
+        <% if logged_in? %>
           <%= link_to "Sign Out", session_url, :method => 'delete' %>
         <% else %>
           <%= link_to "Sign Up", new_user_url %> or Sign In:

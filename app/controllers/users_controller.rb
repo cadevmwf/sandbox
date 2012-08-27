@@ -3,9 +3,19 @@ class UsersController < ApplicationController
   
   def require_login
     if session[:user_id] && session[:user_id] == params[:id].to_i
-      @user = User.find(params[:id])      
+      @user = current_user   
     else
       redirect_to root_url, :notice => "Not authorized for that."
+    end
+  end
+  
+  def root
+    if logged_in?
+      @user = current_user
+      render 'show'
+    else
+      @users = User.all
+      render 'index'
     end
   end
 
@@ -43,7 +53,6 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user = User.find(params[:id])
     @user.destroy
 
     redirect_to users_url
