@@ -27,6 +27,15 @@ class UsersController < ApplicationController
     uri = "https://graph.facebook.com/oauth/access_token?client_id=434825803222733&redirect_uri=http://localhost:3000/auth&client_secret=ac5251e1281670a5edec924f33a61cc7&code=#{@code}"
     
     @response = open(uri).read
+    
+    access_token = @response.split('&').first.split('=').last
+    
+    user = User.find_by_id(session[:user_id])
+    user.facebook_access_token = access_token
+    user.save
+    
+    redirect_to user_url(user)
+    
   end
 
   def index
