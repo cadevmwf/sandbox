@@ -1,4 +1,10 @@
 Sandbox::Application.routes.draw do
+  root :to => 'Users#index'
+  
+  resources :users
+  
+  resource :session, :only => [:create, :destroy]
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
