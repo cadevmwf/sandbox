@@ -28,10 +28,11 @@ class UsersController < ApplicationController
     
     @response = open(uri).read
     
-    access_token = @response.split('&').first.split('=').last
+    access_token = CGI::parse(@response)["access_token"].first
     
     current_user.facebook_access_token = access_token
-    
+    logger.debug '============================='
+    logger.debug current_user.inspect
     me_url = "https://graph.facebook.com/me?access_token=#{access_token}"
     
     me_response = JSON.parse(open(me_url).read)
