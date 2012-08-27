@@ -1,4 +1,8 @@
 Sandbox::Application.routes.draw do
+  resources :friends
+
+  get '/pull_friends' => 'Users#pull_friends'
+
   get '/auth', :controller => 'Users', :action => 'authorize'
   
   root :to => 'Users#root'

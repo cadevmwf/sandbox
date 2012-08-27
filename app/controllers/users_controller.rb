@@ -30,29 +30,53 @@ class UsersController < ApplicationController
     
     access_token = @response.split('&').first.split('=').last
     
-    user = User.find_by_id(session[:user_id])
-    user.facebook_access_token = access_token
+    current_user.facebook_access_token = access_token
     
-    me_url = "https://graph.facebook.com/me?access_token=AAAGLeMWKTs0BADHrDUAm3pOZArjXFD9ZCT033St8719oDGJVnbeCap6MOooZANnD8fZCGTc6DXXjDIbegNkEeo2ZAp1AV5pAZD"
+    me_url = "https://graph.facebook.com/me?access_token=#{access_token}"
     
     me_response = JSON.parse(open(me_url).read)
     
-    user.facebook_id = me_response["id"]
-    user.name = me_response["name"]
+    current_user.facebook_id = me_response["id"]
+    current_user.name = me_response["name"]
     if me_response["location"].present? && me_response["location"]["name"].present?
-      user.location = me_response["location"]["name"]
+      current_user.location = me_response["location"]["name"]
     end
     
-    user.save
+    current_user.save
     
-    redirect_to user_url(user)
+    redirect_to user_url(current_user)
   end
 
   def index
     @users = User.all
   end
+  
+  def pull_friends
+    
+    current_user.friends.destroy_all
+  
+    url = "https://graph.facebook.com/me/friends?fields=name,id,location&access_token=#{current_user.facebook_access_token}"
+
+    response = open(url).read
+
+    @friends = JSON.parse(response)["data"]
+    
+    @friends.each do |friend_hash|
+      if friend_hash["name"].present? && friend_hash["location"].present? && friend_hash["location"]["name"].present?
+        f = Friend.new
+        f.user_id = current_user.id
+        f.name = friend_hash["name"]
+        f.facebook_id = friend_hash["id"]
+        f.location = friend_hash["location"]["name"]
+        f.save
+      end
+    end
+    redirect_to current_user
+  end
 
   def show
+  
+    
   end
 
   def new

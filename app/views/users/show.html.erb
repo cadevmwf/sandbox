@@ -9,4 +9,6 @@
 <p><strong>Name:</strong> <%= @user.name %></p>
 <p><strong>Location:</strong> <%= @user.location %></p>
 
-<%= link_to "Authorize Facebook", "https://www.facebook.com/dialog/oauth?client_id=434825803222733&redirect_uri=http://localhost:3000/auth&state=SOME_ARBITRARY_BUT_UNIQUE_STRING" %>
+<p><%= link_to "Authorize Facebook", "https://www.facebook.com/dialog/oauth?client_id=434825803222733&redirect_uri=http://localhost:3000/auth&state=SOME_ARBITRARY_BUT_UNIQUE_STRING&scope=friends_location" %></p>
+
+<p><%= link_to "Pull Friends", '/pull_friends' %></p>
