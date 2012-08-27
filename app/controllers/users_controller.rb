@@ -32,10 +32,20 @@ class UsersController < ApplicationController
     
     user = User.find_by_id(session[:user_id])
     user.facebook_access_token = access_token
+    
+    me_url = "https://graph.facebook.com/me?access_token=AAAGLeMWKTs0BADHrDUAm3pOZArjXFD9ZCT033St8719oDGJVnbeCap6MOooZANnD8fZCGTc6DXXjDIbegNkEeo2ZAp1AV5pAZD"
+    
+    me_response = JSON.parse(open(me_url).read)
+    
+    user.facebook_id = me_response["id"]
+    user.name = me_response["name"]
+    if me_response["location"].present? && me_response["location"]["name"].present?
+      user.location = me_response["location"]["name"]
+    end
+    
     user.save
     
     redirect_to user_url(user)
-    
   end
 
   def index
